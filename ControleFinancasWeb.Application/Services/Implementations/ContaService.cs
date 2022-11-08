@@ -6,7 +6,7 @@ using ControleFinancasWeb.Infrastructure.Persistence;
 
 namespace ControleFinancasWeb.Application.Services.Implementations
 {
-    internal class ContaService : IContaService
+    public class ContaService : IContaService
     {
         private readonly ControleFinancasDbContext _dbContext;
         public ContaService(ControleFinancasDbContext dbContext)
@@ -50,6 +50,10 @@ namespace ControleFinancasWeb.Application.Services.Implementations
         {
             var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == id);
 
+            if (conta == null)
+            {
+                return null;
+            }
             var contasDetailsViewModel = new ContaDetailsViewModel(
                 conta.Id,
                 conta.Descricao,

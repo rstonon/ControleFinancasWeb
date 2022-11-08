@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ControleFinancasWeb.Application\ControleFinancasWeb.Application.csproj" />
     <ProjectReference Include="..\ControleFinancasWeb.Core\ControleFinancasWeb.Core.csproj" />
+    <ProjectReference Include="..\ControleFinancasWeb.Infrastructure\ControleFinancasWeb.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>

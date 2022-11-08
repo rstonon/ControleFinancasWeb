@@ -12,6 +12,5 @@ namespace ControleFinancasWeb.Application.Services.Interfaces
     {
         UserDetailsViewModel GetById(int id);
         int Create(NewUserInputModel inputModel);
-        void Login(int id);
     }
 }

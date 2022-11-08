@@ -26,7 +26,9 @@ namespace ControleFinancasWeb.Core.Entities
         public string Descricao { get; private set; }
         public decimal Valor { get; private set; }
         public int IdTipo { get; private set; }
+        public Tipo Tipo { get; private set; }
         public int IdDetalhamento { get; private set; }
+        public Detalhamento Detalhamento { get; private set; }
         public DateTime DataVencimento { get; private set; }
         public int? NumeroParcela { get; private set; }
         public int? QuantidadeParcelas { get; private set; }
