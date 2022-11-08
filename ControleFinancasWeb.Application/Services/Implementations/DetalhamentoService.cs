@@ -3,66 +3,102 @@ using ControleFinancasWeb.Application.Services.Interfaces;
 using ControleFinancasWeb.Application.ViewModels;
 using ControleFinancasWeb.Core.Entities;
 using ControleFinancasWeb.Infrastructure.Persistence;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ControleFinancasWeb.Application.Services.Implementations
 {
     public class DetalhamentoService : IDetalhamentoService
     {
-        private readonly ControleFinancasDbContext _dbContext;
-        public DetalhamentoService(ControleFinancasDbContext dbContext)
+        private readonly string _connectionString;
+        public DetalhamentoService(IConfiguration configuration)
         {
-            _dbContext = dbContext;
+            _connectionString = configuration.GetConnectionString("ControleFinancasWeb");
         }
         public int Create(NewDetalhamentoInputModel inputModel)
         {
-            var detalhamento = new Detalhamento(inputModel.Descricao, inputModel.IdTipo);
+            var sql = @"INSERT INTO Detalhamentos (Descricao, CreatedAt, Status, IdTipo) VALUES (@descricao, @createdAt, @status, @idTipo)";
 
-            _dbContext.Detalhamentos.Add(detalhamento);
+            var param = new
+            {
+                descricao = inputModel.Descricao,
+                createdAt = DateTime.Now,
+                status = 3,
+                idTipo = inputModel.IdTipo
+            };
 
-            _dbContext.SaveChanges();
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
 
-            return detalhamento.Id;
+                return db.Execute(sql, param);
+            }
         }
 
         public void Delete(int id)
         {
-            var detalhamento = _dbContext.Detalhamentos.SingleOrDefault(c => c.Id == id);
+            var sql = @"update Detalhamentos set Status = 2 where id = @id";
 
-            detalhamento.Excluir();
+            var param = new
+            {
+                id
+            };
 
-            _dbContext.SaveChanges();
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                db.Execute(sql, param);
+            }
         }
 
         public List<DetalhamentoViewModel> GetAll(string query)
         {
-            var detalhamentos = _dbContext.Detalhamentos.Include(c => c.Tipo);
+            var sql = @"SELECT d.Id, d.Descricao, t.Descricao as Tipo from Detalhamentos d inner join Tipos t ON (d.IdTipo = t.Id) where d.Status = 3";
 
-            var detalhamentosViewModel = detalhamentos.Select(t => new DetalhamentoViewModel(t.Id, t.Descricao, t.Tipo.Descricao)).ToList();
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
 
-            return detalhamentosViewModel;
+                return db.Query<DetalhamentoViewModel>(sql).ToList();
+            }
         }
 
         public DetalhamentoDetailsViewModel GetById(int id)
         {
-            var detalhamento = _dbContext.Detalhamentos
-                .Include(c => c.Tipo)
-                .SingleOrDefault(c => c.Id == id);
+            var sql = @"SELECT d.Id, d.Descricao, t.Descricao as Tipo from Detalhamentos d inner join Tipos t ON (d.IdTipo = t.Id) where d.id = @id";
 
-            var detalhamentosDetailsViewModel = new DetalhamentoDetailsViewModel(
-                detalhamento.Id,
-                detalhamento.Descricao,
-                detalhamento.Tipo.Descricao
-                );
+            var param = new
+            {
+                id
+            };
 
-            return detalhamentosDetailsViewModel;
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                return db.QueryFirstOrDefault<DetalhamentoDetailsViewModel>(sql, param);
+            }
         }
 
         public void Update(UpdateDetalhamentoInputModel inputModel)
         {
-            var detalhamento = _dbContext.Detalhamentos.SingleOrDefault(c => c.Id == inputModel.Id);
+            var sql = @"update Detalhamentos set Descricao = @descricao where id = @id";
 
-            detalhamento.Update(inputModel.Descricao);
+            var param = new
+            {
+                id = inputModel.Id,
+                descricao = inputModel.Descricao
+            };
+
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                db.Execute(sql, param);
+            }
         }
     }
 }

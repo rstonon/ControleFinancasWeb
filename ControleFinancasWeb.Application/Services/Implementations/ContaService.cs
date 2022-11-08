@@ -3,108 +3,155 @@ using ControleFinancasWeb.Application.Services.Interfaces;
 using ControleFinancasWeb.Application.ViewModels;
 using ControleFinancasWeb.Core.Entities;
 using ControleFinancasWeb.Infrastructure.Persistence;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Drawing;
 
 namespace ControleFinancasWeb.Application.Services.Implementations
 {
     public class ContaService : IContaService
     {
-        private readonly ControleFinancasDbContext _dbContext;
-        public ContaService(ControleFinancasDbContext dbContext)
+        private readonly string _connectionString;
+        public ContaService(IConfiguration configuration)
         {
-            _dbContext = dbContext;
+            _connectionString = configuration.GetConnectionString("ControleFinancasWeb");
         }
 
         public void Aberta(int id)
         {
-            var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == id);
+            var sql = @"update Contas set Status = @status where id = @id";
 
-            conta.Aberta();
+            var param = new
+            {
+                id,
+                status = 0
+            };
 
-            _dbContext.SaveChanges();
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                db.Execute(sql, param);
+            }
         }
 
         public int Create(NewContaInputModel inputModel)
         {
-            var conta = new Conta(inputModel.Descricao, inputModel.Valor, inputModel.IdTipo, inputModel.IdDetalhamento, inputModel.DataVencimento, inputModel.NumeroParcela, inputModel.QuantidadeParcelas);
 
-            _dbContext.Contas.Add(conta);
-            _dbContext.SaveChanges();
+            var sql = @"INSERT INTO Contas (Descricao, Valor, IdTipo, IdDetalhamento, DataVencimento, NumeroParcela, QuantidadeParcela, CreatedAt, DataQuitacao, Status) VALUES (@Descricao, @Valor, @IdTipo, @IdDetalhamento, @DataVencimento, @NumeroParcela, @QuantidadeParcela, @CreatedAt, @DataQuitacao, @Status)";
 
-            return conta.Id;
+            var param = new
+            {
+                Descricao = inputModel.Descricao,
+                Valor = inputModel.Valor,
+                IdTipo = inputModel.IdTipo,
+                IdDetalhamento = inputModel.IdDetalhamento,
+                DataVencimento = inputModel.DataVencimento,
+                NumeroParcela = inputModel.NumeroParcela,
+                QuantidadeParcela = inputModel.QuantidadeParcelas,
+                CreatedAt = DateTime.Now,
+                Status = 0
+            };
+
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                return db.Execute(sql, param);
+            }
         }
 
         public void Delete(int id)
         {
-            var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == id);
+            var sql = @"update Contas set Status = 2 where id = @id";
 
-            conta.Excluir();
+            var param = new
+            {
+                id
+            };
 
-            _dbContext.SaveChanges();
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                db.Execute(sql, param);
+            }
         }
 
         public List<ContaViewModel> GetAll(string query)
         {
-            var contas = _dbContext.Contas;
+            //descricao, decimal valor, DateTime dataVencimento, string tipo, string detalhamento
 
-            var contasViewModel = contas.Select(c => new ContaViewModel(
-                c.Id, 
-                c.Descricao, 
-                c.Valor, 
-                c.DataVencimento,
-                c.Tipo.Descricao,
-                c.Detalhamento.Descricao
-                )).ToList();
+            var sql = @"SELECT c.Id, c.Descricao, c.valor, c.dataVencimento, t.Descricao, d.Descricao from Contas c inner join Tipos t ON (c.IdTipo = t.Id) inner join Detalhamentos d ON (c.IdDetalhamento = d.Id) where c.Status = 3";
 
-            return contasViewModel;
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                return db.Query<ContaViewModel>(sql).ToList();
+            }
         }
 
         public ContaDetailsViewModel GetById(int id)
         {
-            var conta = _dbContext.Contas
-                .Include(c => c.Tipo)
-                .Include(c => c.Detalhamento)
-                .SingleOrDefault(c => c.Id == id);
+            var sql = @"SELECT c.Id, c.Descricao, c.valor, c.IdTipo, c.IdDetalhamento, c.dataVencimento, c.NumeroParcela, c.QuantidadeParcelas, c.CreatedAt, c.DataQuitacao, c.Status, t.Descricao, d.Descricao from Contas c inner join Tipos t ON (c.IdTipo = t.Id) inner join Detalhamentos d ON (c.IdDetalhamento = d.Id) where c.id = @id";
 
-            if (conta == null)
+            var param = new
             {
-                return null;
-            }
-            var contasDetailsViewModel = new ContaDetailsViewModel(
-                conta.Id,
-                conta.Descricao,
-                conta.Valor,
-                conta.IdTipo,
-                conta.IdDetalhamento,
-                conta.DataVencimento,
-                conta.NumeroParcela,
-                conta.QuantidadeParcelas,
-                conta.CreatedAt,
-                conta.DataQuitacao,
-                conta.Status,
-                conta.Tipo.Descricao,
-                conta.Detalhamento.Descricao
-                );
+                id
+            };
 
-            return contasDetailsViewModel;
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                return db.QueryFirstOrDefault<ContaDetailsViewModel>(sql, param);
+            }
         }
 
         public void Quitar(int id)
         {
-            var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == id);
+            var sql = @"update Contas set Status = @status where id = @id";
 
-            conta.Quitar();
+            var param = new
+            {
+                id,
+                status = 1
+            };
 
-            _dbContext.SaveChanges();
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                db.Execute(sql, param);
+            }
         }
 
         public void Update(UpdateContaInputModel inputModel)
         {
-            var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == inputModel.Id);
 
-            conta.Update(inputModel.Descricao, inputModel.Valor,inputModel.IdTipo, inputModel.IdDetalhamento, inputModel.DataVencimento,inputModel.NumeroParcela,inputModel.QuantidadeParcelas);
+        var sql = @"update Contas set Descricao = @descricao, Valor = @valor, IdTipo = @idTipo, IdDetalhamento = @idDetalhamento, DataVencimento = @vencimento, NumeroParcela = @parcela, QuantidadeParcelas = @qntParcelas where id = @id";
 
-            _dbContext.SaveChanges();
+            var param = new
+            {
+                id = inputModel.Id,
+                descricao = inputModel.Descricao,
+                valor = inputModel.Valor,
+                idTipo = inputModel.IdTipo,
+                idDetalhamento = inputModel.IdDetalhamento,
+                vencimento = inputModel.DataVencimento,
+                parcela = inputModel.NumeroParcela,
+                qntParcelas = inputModel.QuantidadeParcelas,
+            };
+
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                db.Execute(sql, param);
+            }
 
         }
     }

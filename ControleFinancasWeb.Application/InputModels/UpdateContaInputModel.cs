@@ -13,7 +13,7 @@ namespace ControleFinancasWeb.Application.InputModels
         public decimal Valor { get; set; }
         public int IdTipo { get; set; }
         public int IdDetalhamento { get; set; }
-        public DateTime DataVencimento { get; set; }
+        public DateOnly DataVencimento { get; set; }
         public int? NumeroParcela { get; set; }
         public int? QuantidadeParcelas { get; set; }
     }

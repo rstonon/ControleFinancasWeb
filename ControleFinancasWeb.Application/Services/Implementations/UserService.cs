@@ -3,6 +3,9 @@ using ControleFinancasWeb.Application.Services.Interfaces;
 using ControleFinancasWeb.Application.ViewModels;
 using ControleFinancasWeb.Core.Entities;
 using ControleFinancasWeb.Infrastructure.Persistence;
+using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,32 +16,46 @@ namespace ControleFinancasWeb.Application.Services.Implementations
 {
     public class UserService : IUserService
     {
-        private readonly ControleFinancasDbContext _dbContext;
-        public UserService(ControleFinancasDbContext dbContext)
+        private readonly string _connectionString;
+        public UserService(IConfiguration configuration)
         {
-            _dbContext = dbContext;
+            _connectionString = configuration.GetConnectionString("ControleFinancasWeb");
         }
         public int Create(NewUserInputModel inputModel)
         {
-            var user = new User(inputModel.FullName, inputModel.Email);
+            var sql = @"INSERT INTO Users (FullName, Email, Ativo, CreatedAt) VALUES (@FullName, @Email, @Ativo, @CreatedAt)";
 
-            _dbContext.Users.Add(user);
+            var param = new
+            {
+                FullName = inputModel.FullName,
+                Email = inputModel.Email,
+                CreatedAt = DateTime.Now,
+                Ativo = true
+            };
 
-            _dbContext.SaveChanges();
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
 
-            return user.Id;
+                return db.Execute(sql, param);
+            }
         }
 
         public UserDetailsViewModel GetById(int id)
         {
-            var user = _dbContext.Users.SingleOrDefault(c => c.Id == id);
+            var sql = @"SELECT Id, FullName from Users where id = @id";
 
-            var usersDetailsViewModel = new UserDetailsViewModel(
-                user.Id,
-                user.FullName
-                );
+            var param = new
+            {
+                id
+            };
 
-            return usersDetailsViewModel;
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                return db.QueryFirstOrDefault<UserDetailsViewModel>(sql, param);
+            }
         }
     }
 }

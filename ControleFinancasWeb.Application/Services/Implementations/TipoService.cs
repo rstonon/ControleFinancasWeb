@@ -3,6 +3,9 @@ using ControleFinancasWeb.Application.Services.Interfaces;
 using ControleFinancasWeb.Application.ViewModels;
 using ControleFinancasWeb.Core.Entities;
 using ControleFinancasWeb.Infrastructure.Persistence;
+using Dapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,55 +16,93 @@ namespace ControleFinancasWeb.Application.Services.Implementations
 {
     public class TipoService : ITipoService
     {
-        private readonly ControleFinancasDbContext _dbContext;
-        public TipoService(ControleFinancasDbContext dbContext)
+        private readonly string _connectionString;
+        public TipoService(IConfiguration configuration)
         {
-            _dbContext = dbContext;
+            _connectionString = configuration.GetConnectionString("ControleFinancasWeb");
+
         }
         public int Create(NewTipoInputModel inputModel)
         {
-            var tipo = new Tipo(inputModel.Descricao);
+            var sql = @"INSERT INTO Tipos (Descricao, CreatedAt, Status) VALUES (@descricao, @createdAt, @status)";
 
-            _dbContext.Tipos.Add(tipo);
-            _dbContext.SaveChanges();
+            var param = new
+            {
+                descricao = inputModel.Descricao,
+                createdAt = DateTime.Now,
+                status = 3
+            };
 
-            return tipo.Id;
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                return db.Execute(sql, param);
+            }
         }
 
         public void Delete(int id)
         {
-            var tipo = _dbContext.Tipos.SingleOrDefault(c => c.Id == id);
+            var sql = @"update Tipos set Status = 2 where id = @id";
 
-            tipo.Excluir();
-            _dbContext.SaveChanges();
+            var param = new
+            {
+                id
+            };
+
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                db.Execute(sql, param);
+            }
         }
 
         public List<TipoViewModel> GetAll(string query)
         {
-            var tipos = _dbContext.Tipos;
+            var sql = @"SELECT Id, Descricao from Tipos where Status = 3";
 
-            var tiposViewModel = tipos.Select(t => new TipoViewModel(t.Id, t.Descricao)).ToList();
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
 
-            return tiposViewModel;
+                return db.Query<TipoViewModel>(sql).ToList();
+            }
         }
 
         public TipoDetailsViewModel GetById(int id)
         {
-            var tipo = _dbContext.Tipos.SingleOrDefault(c => c.Id == id);
+            var sql = @"SELECT Id, Descricao from Tipos where id = @id";
 
-            var tiposDetailsViewModel = new TipoDetailsViewModel(
-                tipo.Id,
-                tipo.Descricao
-                );
+            var param = new
+            {
+                id
+            };
 
-            return tiposDetailsViewModel;
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                return db.QueryFirstOrDefault<TipoDetailsViewModel>(sql, param);
+            }
         }
 
         public void Update(UpdateTipoInputModel inputModel)
         {
-            var tipo = _dbContext.Tipos.SingleOrDefault(c => c.Id == inputModel.Id);
+            var sql = @"update Tipos set Descricao = @descricao where id = @id";
 
-            tipo.Update(inputModel.Descricao);
+            var param = new
+            {
+                id = inputModel.Id,
+                descricao = inputModel.Descricao
+            };
+
+            using (var db = new SqlConnection(_connectionString))
+            {
+                db.Open();
+
+                db.Execute(sql, param);
+            }
         }
     }
 }
