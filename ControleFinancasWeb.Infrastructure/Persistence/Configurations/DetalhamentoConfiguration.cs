@@ -16,6 +16,12 @@ namespace ControleFinancasWeb.Infrastructure.Persistence.Configurations
         {
             builder
                 .HasKey(d => d.Id);
+
+            builder
+                .HasOne(c => c.Tipo)
+                .WithMany(t => t.Detalhamentos)
+                .HasForeignKey(c => c.IdTipo)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

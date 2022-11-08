@@ -3,6 +3,7 @@ using ControleFinancasWeb.Application.Services.Interfaces;
 using ControleFinancasWeb.Application.ViewModels;
 using ControleFinancasWeb.Core.Entities;
 using ControleFinancasWeb.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace ControleFinancasWeb.Application.Services.Implementations
 {
@@ -19,6 +20,8 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == id);
 
             conta.Aberta();
+
+            _dbContext.SaveChanges();
         }
 
         public int Create(NewContaInputModel inputModel)
@@ -26,6 +29,7 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             var conta = new Conta(inputModel.Descricao, inputModel.Valor, inputModel.IdTipo, inputModel.IdDetalhamento, inputModel.DataVencimento, inputModel.NumeroParcela, inputModel.QuantidadeParcelas);
 
             _dbContext.Contas.Add(conta);
+            _dbContext.SaveChanges();
 
             return conta.Id;
         }
@@ -35,20 +39,32 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == id);
 
             conta.Excluir();
+
+            _dbContext.SaveChanges();
         }
 
         public List<ContaViewModel> GetAll(string query)
         {
             var contas = _dbContext.Contas;
 
-            var contasViewModel = contas.Select(c => new ContaViewModel(c.Id, c.Descricao, c.Valor, c.DataVencimento)).ToList();
+            var contasViewModel = contas.Select(c => new ContaViewModel(
+                c.Id, 
+                c.Descricao, 
+                c.Valor, 
+                c.DataVencimento,
+                c.Tipo.Descricao,
+                c.Detalhamento.Descricao
+                )).ToList();
 
             return contasViewModel;
         }
 
         public ContaDetailsViewModel GetById(int id)
         {
-            var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == id);
+            var conta = _dbContext.Contas
+                .Include(c => c.Tipo)
+                .Include(c => c.Detalhamento)
+                .SingleOrDefault(c => c.Id == id);
 
             if (conta == null)
             {
@@ -65,7 +81,9 @@ namespace ControleFinancasWeb.Application.Services.Implementations
                 conta.QuantidadeParcelas,
                 conta.CreatedAt,
                 conta.DataQuitacao,
-                conta.Status
+                conta.Status,
+                conta.Tipo.Descricao,
+                conta.Detalhamento.Descricao
                 );
 
             return contasDetailsViewModel;
@@ -76,6 +94,8 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == id);
 
             conta.Quitar();
+
+            _dbContext.SaveChanges();
         }
 
         public void Update(UpdateContaInputModel inputModel)
@@ -83,6 +103,8 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             var conta = _dbContext.Contas.SingleOrDefault(c => c.Id == inputModel.Id);
 
             conta.Update(inputModel.Descricao, inputModel.Valor,inputModel.IdTipo, inputModel.IdDetalhamento, inputModel.DataVencimento,inputModel.NumeroParcela,inputModel.QuantidadeParcelas);
+
+            _dbContext.SaveChanges();
 
         }
     }

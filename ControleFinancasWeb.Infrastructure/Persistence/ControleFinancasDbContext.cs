@@ -13,8 +13,8 @@ namespace ControleFinancasWeb.Infrastructure.Persistence
         public DbSet<Conta> Contas { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Tipo> Tipos { get; set; }
-        public DbSet<TipoDetalhamento> TipoDetalhamentos { get; set; }
         public DbSet<Detalhamento> Detalhamentos { get; set; }
+        public DbSet<TipoDetalhamento> TipoDetalhamentos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

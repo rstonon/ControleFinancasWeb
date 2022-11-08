@@ -1,0 +1,24 @@
+﻿using ControleFinancasWeb.Core.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ControleFinancasWeb.Application.ViewModels
+{
+    public class DetalhamentoViewModel
+    {
+        public DetalhamentoViewModel(int id, string descricao, string tipo)
+        {
+            Id = id;
+            Descricao = descricao;
+            Tipo = tipo;
+        }
+
+        public int Id { get; private set; }
+        public string Descricao { get; private set; }
+
+        public string Tipo { get; private set; }
+    }
+}

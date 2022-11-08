@@ -14,14 +14,14 @@ namespace ControleFinancasWeb.Core.Entities
         {
             Descricao = descricao;
             CreatedAt = DateTime.Now;
-            Detalhamentos = new List<TipoDetalhamento>();
+            Detalhamentos = new List<Detalhamento>();
             Contas = new List<Conta>();
             Status = ProjectStatusEnum.Ativo;
         }
 
         public string Descricao { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public List<TipoDetalhamento> Detalhamentos { get; private set; }
+        public List<Detalhamento> Detalhamentos { get; private set; }
         public List<Conta> Contas { get; private set; }
         public ProjectStatusEnum Status { get; private set; }
 

@@ -9,7 +9,7 @@ namespace ControleFinancasWeb.Application.ViewModels
 {
     public class ContaDetailsViewModel
     {
-        public ContaDetailsViewModel(int id, string descricao, decimal valor, int idTipo, int idDetalhamento, DateTime dataVencimento, int? numeroParcela, int? quantidadeParcelas, DateTime createdAt, DateTime? dataQuitacao, ProjectStatusEnum status)
+        public ContaDetailsViewModel(int id, string descricao, decimal valor, int idTipo, int idDetalhamento, DateTime dataVencimento, int? numeroParcela, int? quantidadeParcelas, DateTime createdAt, DateTime? dataQuitacao, ProjectStatusEnum status, string tipoFullName, string detalhamentoFullName)
         {
             Id = id;
             Descricao = descricao;
@@ -22,6 +22,8 @@ namespace ControleFinancasWeb.Application.ViewModels
             CreatedAt = createdAt;
             DataQuitacao = dataQuitacao;
             Status = status;
+            TipoFullName = tipoFullName;
+            DetalhamentoFullName = detalhamentoFullName;
         }
 
         public int Id { get; private set; }
@@ -35,5 +37,8 @@ namespace ControleFinancasWeb.Application.ViewModels
         public DateTime CreatedAt { get; private set; }
         public DateTime? DataQuitacao { get; private set; }
         public ProjectStatusEnum Status { get; private set; }
+
+        public string TipoFullName { get; private set; }
+        public string DetalhamentoFullName { get; private set; }
     }
 }

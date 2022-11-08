@@ -21,13 +21,13 @@ namespace ControleFinancasWeb.Infrastructure.Persistence.Configurations
                 .HasOne(c => c.Tipo)
                 .WithMany(t => t.Contas)
                 .HasForeignKey(c => c.IdTipo)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder
                 .HasOne(c => c.Detalhamento)
                 .WithMany(d => d.Contas)
                 .HasForeignKey(c => c.IdDetalhamento)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

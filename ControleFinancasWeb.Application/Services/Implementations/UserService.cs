@@ -20,9 +20,11 @@ namespace ControleFinancasWeb.Application.Services.Implementations
         }
         public int Create(NewUserInputModel inputModel)
         {
-            var user = new User(inputModel.FullName, inputModel.Password, inputModel.Email);
+            var user = new User(inputModel.FullName, inputModel.Email);
 
             _dbContext.Users.Add(user);
+
+            _dbContext.SaveChanges();
 
             return user.Id;
         }

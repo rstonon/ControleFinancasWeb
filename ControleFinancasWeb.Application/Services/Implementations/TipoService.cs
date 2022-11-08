@@ -23,6 +23,7 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             var tipo = new Tipo(inputModel.Descricao);
 
             _dbContext.Tipos.Add(tipo);
+            _dbContext.SaveChanges();
 
             return tipo.Id;
         }
@@ -32,6 +33,7 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             var tipo = _dbContext.Tipos.SingleOrDefault(c => c.Id == id);
 
             tipo.Excluir();
+            _dbContext.SaveChanges();
         }
 
         public List<TipoViewModel> GetAll(string query)

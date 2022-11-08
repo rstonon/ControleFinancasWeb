@@ -1,6 +1,8 @@
 using ControleFinancasWeb.Application.Services.Implementations;
 using ControleFinancasWeb.Application.Services.Interfaces;
 using ControleFinancasWeb.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 namespace ControleFinancasWeb.API
@@ -17,11 +19,13 @@ namespace ControleFinancasWeb.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<ControleFinancasDbContext>();
+            var conn = Configuration.GetConnectionString("ControleFinancasWeb");
+            services.AddDbContext<ControleFinancasDbContext>(o => o.UseSqlServer(conn));
 
             services.AddScoped<IContaService, ContaService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<ITipoService, TipoService>();
+            services.AddScoped<IDetalhamentoService, DetalhamentoService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
