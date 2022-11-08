@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleFinancasWeb.API", "ControleFinancasWeb.API\ControleFinancasWeb.API.csproj", "{A3BBB3C9-B901-49BA-BE38-5E4B7C655FB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleFinancasWeb.API", "ControleFinancasWeb.API\ControleFinancasWeb.API.csproj", "{A3BBB3C9-B901-49BA-BE38-5E4B7C655FB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleFinancasWeb.Core", "ControleFinancasWeb.Core\ControleFinancasWeb.Core.csproj", "{60E15636-6D92-4211-B02D-31DB71C7F750}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleFinancasWeb.Core", "ControleFinancasWeb.Core\ControleFinancasWeb.Core.csproj", "{60E15636-6D92-4211-B02D-31DB71C7F750}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleFinancasWeb.Infrastructure", "ControleFinancasWeb.Infrastructure\ControleFinancasWeb.Infrastructure.csproj", "{5BC2D239-CCF9-4EF8-9B9B-05A3847E0EBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleFinancasWeb.Application", "ControleFinancasWeb.Application\ControleFinancasWeb.Application.csproj", "{929F7890-CBB5-4552-A034-57BE1914A1C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{60E15636-6D92-4211-B02D-31DB71C7F750}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{60E15636-6D92-4211-B02D-31DB71C7F750}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{60E15636-6D92-4211-B02D-31DB71C7F750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BC2D239-CCF9-4EF8-9B9B-05A3847E0EBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BC2D239-CCF9-4EF8-9B9B-05A3847E0EBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BC2D239-CCF9-4EF8-9B9B-05A3847E0EBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BC2D239-CCF9-4EF8-9B9B-05A3847E0EBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{929F7890-CBB5-4552-A034-57BE1914A1C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{929F7890-CBB5-4552-A034-57BE1914A1C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{929F7890-CBB5-4552-A034-57BE1914A1C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{929F7890-CBB5-4552-A034-57BE1914A1C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

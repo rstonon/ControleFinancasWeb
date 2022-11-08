@@ -11,5 +11,6 @@ namespace ControleFinancasWeb.Core.Enums
         Aberto = 0,
         Quitado = 1,
         Excluido = 2,
+        Ativo = 3
     }
 }
