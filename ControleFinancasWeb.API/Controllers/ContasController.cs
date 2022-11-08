@@ -47,5 +47,11 @@ namespace ControleFinancasWeb.API.Controllers
         {
             return NoContent();
         }
+
+        [HttpPut("{id}/aberta")]
+        public IActionResult Aberta(int id)
+        {
+            return NoContent();
+        }
     }
 }

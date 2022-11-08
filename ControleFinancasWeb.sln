@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleFinancasWeb.API", "ControleFinancasWeb.API\ControleFinancasWeb.API.csproj", "{A3BBB3C9-B901-49BA-BE38-5E4B7C655FB6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleFinancasWeb.Core", "ControleFinancasWeb.Core\ControleFinancasWeb.Core.csproj", "{60E15636-6D92-4211-B02D-31DB71C7F750}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A3BBB3C9-B901-49BA-BE38-5E4B7C655FB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3BBB3C9-B901-49BA-BE38-5E4B7C655FB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3BBB3C9-B901-49BA-BE38-5E4B7C655FB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{60E15636-6D92-4211-B02D-31DB71C7F750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{60E15636-6D92-4211-B02D-31DB71C7F750}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{60E15636-6D92-4211-B02D-31DB71C7F750}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{60E15636-6D92-4211-B02D-31DB71C7F750}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
