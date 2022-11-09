@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Application.ViewModels
 {
-    public class TipoDetailsViewModel
+    public class CategoriaDetailsViewModel
     {
-        public TipoDetailsViewModel(int id, string descricao)
+        public CategoriaDetailsViewModel(int id, string descricao)
         {
             Id = id;
             Descricao = descricao;

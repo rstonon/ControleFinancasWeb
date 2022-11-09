@@ -1,5 +1,4 @@
-﻿using ControleFinancasWeb.Core.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Application.ViewModels
 {
-    public class DetalhamentoViewModel
+    public class SubCategoriaDetailsViewModel
     {
-        public DetalhamentoViewModel(int id, string descricao, string tipo)
+        public SubCategoriaDetailsViewModel(int id, string descricao, string tipo)
         {
             Id = id;
             Descricao = descricao;
@@ -18,7 +17,6 @@ namespace ControleFinancasWeb.Application.ViewModels
 
         public int Id { get; private set; }
         public string Descricao { get; private set; }
-
         public string Tipo { get; private set; }
     }
 }

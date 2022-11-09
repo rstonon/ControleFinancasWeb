@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ControleFinancasWeb.API.Controllers
 {
-    [Route("api/detalhamentos")]
-    public class DetalhamentosController : ControllerBase
+    [Route("api/subcategorias")]
+    public class SubCategoriasController : ControllerBase
     {
-        private readonly IDetalhamentoService _detalhamentoService;
+        private readonly ISubCategoriaService _detalhamentoService;
 
-        public DetalhamentosController(IDetalhamentoService detalhamentoService)
+        public SubCategoriasController(ISubCategoriaService detalhamentoService)
         {
             _detalhamentoService = detalhamentoService;
         }
@@ -37,7 +37,7 @@ namespace ControleFinancasWeb.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] NewDetalhamentoInputModel inputModel)
+        public IActionResult Post([FromBody] NewSubCategoriaInputModel inputModel)
         {
             var id = _detalhamentoService.Create(inputModel);
 
@@ -45,7 +45,7 @@ namespace ControleFinancasWeb.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateDetalhamentoInputModel inputModel)
+        public IActionResult Put(int id, [FromBody] UpdateSubCategoriaInputModel inputModel)
         {
             _detalhamentoService.Update(inputModel);
 

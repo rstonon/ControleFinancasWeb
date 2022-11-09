@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControleFinancasWeb.Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,17 +7,15 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Application.ViewModels
 {
-    public class DetalhamentoDetailsViewModel
+    public class CategoriaViewModel
     {
-        public DetalhamentoDetailsViewModel(int id, string descricao, string tipo)
+        public CategoriaViewModel(int id, string descricao)
         {
             Id = id;
             Descricao = descricao;
-            Tipo = tipo;
         }
 
         public int Id { get; private set; }
         public string Descricao { get; private set; }
-        public string Tipo { get; private set; }
     }
 }

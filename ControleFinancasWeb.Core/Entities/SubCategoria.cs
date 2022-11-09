@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Core.Entities
 {
-    public class Detalhamento : BaseEntity
+    public class SubCategoria : BaseEntity
     {
-        public Detalhamento(string descricao, int idTipo)
+        public SubCategoria(string descricao, int idTipo)
         {
             Descricao = descricao;
             CreatedAt = DateTime.Now;
@@ -22,7 +22,7 @@ namespace ControleFinancasWeb.Core.Entities
         public List<Conta> Contas { get; private set; }
         public ProjectStatusEnum Status { get; private set; }
         public int IdTipo { get; private set; }
-        public Tipo Tipo { get; private set; }
+        public Categoria Tipo { get; private set; }
 
         public void Excluir()
         {

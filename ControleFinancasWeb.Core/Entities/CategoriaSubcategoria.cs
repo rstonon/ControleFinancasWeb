@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Core.Entities
 {
-    public class TipoDetalhamento : BaseEntity
+    public class CategoriaSubcategoria : BaseEntity
     {
-        public TipoDetalhamento(int idTipo, int idDetalhamento)
+        public CategoriaSubcategoria(int idTipo, int idDetalhamento)
         {
             IdTipo = idTipo;
             IdDetalhamento = idDetalhamento;

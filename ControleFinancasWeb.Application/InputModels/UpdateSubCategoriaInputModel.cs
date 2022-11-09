@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Application.InputModels
 {
-    public class NewTipoInputModel
+    public class UpdateSubCategoriaInputModel
     {
+        public int Id { get; set; }
         public string Descricao { get; set; }
+        public int IdTipo { get; set; }
     }
 }

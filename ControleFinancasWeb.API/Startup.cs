@@ -24,8 +24,8 @@ namespace ControleFinancasWeb.API
 
             services.AddScoped<IContaService, ContaService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<ITipoService, TipoService>();
-            services.AddScoped<IDetalhamentoService, DetalhamentoService>();
+            services.AddScoped<ICategoriaService, CategoriaService>();
+            services.AddScoped<ISubCategoriaService, SubCategoriaService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

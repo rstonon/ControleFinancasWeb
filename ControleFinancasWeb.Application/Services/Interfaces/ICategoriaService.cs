@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Application.Services.Interfaces
 {
-    public interface ITipoService
+    public interface ICategoriaService
     {
-        List<TipoViewModel> GetAll(string query);
-        TipoDetailsViewModel GetById(int id);
-        int Create(NewTipoInputModel inputModel);
-        void Update(UpdateTipoInputModel inputModel);
+        List<CategoriaViewModel> GetAll(string query);
+        CategoriaDetailsViewModel GetById(int id);
+        int Create(NewCategoriaInputModel inputModel);
+        void Update(UpdateCategoriaInputModel inputModel);
         void Delete(int id);
     }
 }

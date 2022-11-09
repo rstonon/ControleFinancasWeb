@@ -14,17 +14,17 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Application.Services.Implementations
 {
-    public class TipoService : ITipoService
+    public class CategoriaService : ICategoriaService
     {
         private readonly string _connectionString;
-        public TipoService(IConfiguration configuration)
+        public CategoriaService(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("ControleFinancasWeb");
 
         }
-        public int Create(NewTipoInputModel inputModel)
+        public int Create(NewCategoriaInputModel inputModel)
         {
-            var sql = @"INSERT INTO Tipos (Descricao, CreatedAt, Status) VALUES (@descricao, @createdAt, @status)";
+            var sql = @"INSERT INTO Categorias (Descricao, CreatedAt, Status) VALUES (@descricao, @createdAt, @status)";
 
             var param = new
             {
@@ -43,7 +43,7 @@ namespace ControleFinancasWeb.Application.Services.Implementations
 
         public void Delete(int id)
         {
-            var sql = @"update Tipos set Status = 2 where id = @id";
+            var sql = @"update Categorias set Status = 2 where id = @id";
 
             var param = new
             {
@@ -58,21 +58,21 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             }
         }
 
-        public List<TipoViewModel> GetAll(string query)
+        public List<CategoriaViewModel> GetAll(string query)
         {
-            var sql = @"SELECT Id, Descricao from Tipos where Status = 3";
+            var sql = @"SELECT Id, Descricao from Categorias where Status = 3";
 
             using (var db = new SqlConnection(_connectionString))
             {
                 db.Open();
 
-                return db.Query<TipoViewModel>(sql).ToList();
+                return db.Query<CategoriaViewModel>(sql).ToList();
             }
         }
 
-        public TipoDetailsViewModel GetById(int id)
+        public CategoriaDetailsViewModel GetById(int id)
         {
-            var sql = @"SELECT Id, Descricao from Tipos where id = @id";
+            var sql = @"SELECT Id, Descricao from Categorias where id = @id";
 
             var param = new
             {
@@ -83,13 +83,13 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             {
                 db.Open();
 
-                return db.QueryFirstOrDefault<TipoDetailsViewModel>(sql, param);
+                return db.QueryFirstOrDefault<CategoriaDetailsViewModel>(sql, param);
             }
         }
 
-        public void Update(UpdateTipoInputModel inputModel)
+        public void Update(UpdateCategoriaInputModel inputModel)
         {
-            var sql = @"update Tipos set Descricao = @descricao where id = @id";
+            var sql = @"update Categorias set Descricao = @descricao where id = @id";
 
             var param = new
             {

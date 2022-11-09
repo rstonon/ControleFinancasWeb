@@ -10,16 +10,16 @@ using Microsoft.Extensions.Configuration;
 
 namespace ControleFinancasWeb.Application.Services.Implementations
 {
-    public class DetalhamentoService : IDetalhamentoService
+    public class SubCategoriaService : ISubCategoriaService
     {
         private readonly string _connectionString;
-        public DetalhamentoService(IConfiguration configuration)
+        public SubCategoriaService(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("ControleFinancasWeb");
         }
-        public int Create(NewDetalhamentoInputModel inputModel)
+        public int Create(NewSubCategoriaInputModel inputModel)
         {
-            var sql = @"INSERT INTO Detalhamentos (Descricao, CreatedAt, Status, IdTipo) VALUES (@descricao, @createdAt, @status, @idTipo)";
+            var sql = @"INSERT INTO SubCategorias (Descricao, CreatedAt, Status, IdTipo) VALUES (@descricao, @createdAt, @status, @idTipo)";
 
             var param = new
             {
@@ -39,7 +39,7 @@ namespace ControleFinancasWeb.Application.Services.Implementations
 
         public void Delete(int id)
         {
-            var sql = @"update Detalhamentos set Status = 2 where id = @id";
+            var sql = @"update SubCategorias set Status = 2 where id = @id";
 
             var param = new
             {
@@ -54,21 +54,21 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             }
         }
 
-        public List<DetalhamentoViewModel> GetAll(string query)
+        public List<SubCategoriaViewModel> GetAll(string query)
         {
-            var sql = @"SELECT d.Id, d.Descricao, t.Descricao as Tipo from Detalhamentos d inner join Tipos t ON (d.IdTipo = t.Id) where d.Status = 3";
+            var sql = @"SELECT d.Id, d.Descricao, t.Descricao as Tipo from SubCategorias d inner join Tipos t ON (d.IdTipo = t.Id) where d.Status = 3";
 
             using (var db = new SqlConnection(_connectionString))
             {
                 db.Open();
 
-                return db.Query<DetalhamentoViewModel>(sql).ToList();
+                return db.Query<SubCategoriaViewModel>(sql).ToList();
             }
         }
 
-        public DetalhamentoDetailsViewModel GetById(int id)
+        public SubCategoriaDetailsViewModel GetById(int id)
         {
-            var sql = @"SELECT d.Id, d.Descricao, t.Descricao as Tipo from Detalhamentos d inner join Tipos t ON (d.IdTipo = t.Id) where d.id = @id";
+            var sql = @"SELECT d.Id, d.Descricao, t.Descricao as Tipo from SubCategorias d inner join Tipos t ON (d.IdTipo = t.Id) where d.id = @id";
 
             var param = new
             {
@@ -79,13 +79,13 @@ namespace ControleFinancasWeb.Application.Services.Implementations
             {
                 db.Open();
 
-                return db.QueryFirstOrDefault<DetalhamentoDetailsViewModel>(sql, param);
+                return db.QueryFirstOrDefault<SubCategoriaDetailsViewModel>(sql, param);
             }
         }
 
-        public void Update(UpdateDetalhamentoInputModel inputModel)
+        public void Update(UpdateSubCategoriaInputModel inputModel)
         {
-            var sql = @"update Detalhamentos set Descricao = @descricao where id = @id";
+            var sql = @"update SubCategorias set Descricao = @descricao where id = @id";
 
             var param = new
             {

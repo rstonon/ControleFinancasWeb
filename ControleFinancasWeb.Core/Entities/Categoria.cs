@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Core.Entities
 {
-    public class Tipo : BaseEntity
+    public class Categoria : BaseEntity
     {
-        public Tipo(string descricao)
+        public Categoria(string descricao)
         {
             Descricao = descricao;
             CreatedAt = DateTime.Now;
-            Detalhamentos = new List<Detalhamento>();
+            Detalhamentos = new List<SubCategoria>();
             Contas = new List<Conta>();
             Status = ProjectStatusEnum.Ativo;
         }
 
         public string Descricao { get; private set; }
         public DateTime CreatedAt { get; private set; }
-        public List<Detalhamento> Detalhamentos { get; private set; }
+        public List<SubCategoria> Detalhamentos { get; private set; }
         public List<Conta> Contas { get; private set; }
         public ProjectStatusEnum Status { get; private set; }
 

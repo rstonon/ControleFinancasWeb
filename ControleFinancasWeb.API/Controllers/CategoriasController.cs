@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ControleFinancasWeb.API.Controllers
 {
-    [Route("api/tipos")]
-    public class TiposController : ControllerBase
+    [Route("api/categorias")]
+    public class CategoriasController : ControllerBase
     {
-        private readonly ITipoService _tipoService;
+        private readonly ICategoriaService _tipoService;
 
-        public TiposController(ITipoService tipoService)
+        public CategoriasController(ICategoriaService tipoService)
         {
             _tipoService = tipoService;
         }
@@ -37,7 +37,7 @@ namespace ControleFinancasWeb.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] NewTipoInputModel inputModel)
+        public IActionResult Post([FromBody] NewCategoriaInputModel inputModel)
         {
             var id = _tipoService.Create(inputModel);
 
@@ -45,7 +45,7 @@ namespace ControleFinancasWeb.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UpdateTipoInputModel inputModel)
+        public IActionResult Put(int id, [FromBody] UpdateCategoriaInputModel inputModel)
         {
             _tipoService.Update(inputModel);
 

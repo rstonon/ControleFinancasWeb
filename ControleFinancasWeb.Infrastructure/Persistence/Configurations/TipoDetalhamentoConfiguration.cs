@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace ControleFinancasWeb.Infrastructure.Persistence.Configurations
 {
-    public class TipoDetalhamentoConfiguration : IEntityTypeConfiguration<TipoDetalhamento>
+    public class TipoDetalhamentoConfiguration : IEntityTypeConfiguration<CategoriaSubcategoria>
     {
-        public void Configure(EntityTypeBuilder<TipoDetalhamento> builder)
+        public void Configure(EntityTypeBuilder<CategoriaSubcategoria> builder)
         {
             builder
                 .HasKey(td => td.Id);
